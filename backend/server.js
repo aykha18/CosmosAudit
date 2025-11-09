@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -5,7 +6,7 @@ const { Pool } = require('pg');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
@@ -20,20 +21,18 @@ if (process.env.NODE_ENV === 'production') {
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 5000, // 5 second timeout
-  query_timeout: 10000, // 10 second query timeout
-  idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
-  max: 10, // Maximum 10 connections in pool
+  connectionTimeoutMillis: 5000,
+  query_timeout: 10000,
+  idleTimeoutMillis: 30000,
+  max: 10,
 });
 
-// Test database connection
 pool.on('connect', () => {
   console.log('Connected to PostgreSQL database');
 });
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
-  // Don't exit process - let the app continue running
 });
 
 // Initialize database tables
@@ -74,8 +73,7 @@ async function initializeDatabase() {
     console.log('Database tables initialized');
   } catch (err) {
     console.error('Error initializing database:', err);
-    // Don't exit process on database error - let the app start without database
-    // Railway will retry and the database will be available eventually
+    throw err;
   }
 }
 
@@ -85,18 +83,17 @@ async function initializeDatabaseWithRetry(retries = 10, delay = 3000) {
     try {
       await initializeDatabase();
       console.log('Database initialized successfully!');
-      return; // Success, exit retry loop
+      return;
     } catch (err) {
       console.log(`Database initialization attempt ${i + 1}/${retries} failed, retrying in ${delay/1000}s...`);
       if (i < retries - 1) {
-        await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retry
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
   }
   console.log('Database initialization failed after all retries, but continuing with app startup');
 }
 
-// Initialize database on startup (don't await to not block app startup)
 initializeDatabaseWithRetry();
 
 // API Routes
@@ -116,7 +113,7 @@ app.post('/api/leads', async (req, res) => {
     );
     res.json({ leadId: result.rows[0].id, message: 'Lead saved successfully' });
   } catch (err) {
-    if (err.code === '23505') { // Unique constraint violation
+    if (err.code === '23505') {
       try {
         const existing = await pool.query('SELECT id FROM leads WHERE email = $1', [email]);
         return res.json({ leadId: existing.rows[0].id, message: 'Lead already exists' });
@@ -142,14 +139,12 @@ app.post('/api/assessments', async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    // Insert assessment
     const assessmentResult = await client.query(
       'INSERT INTO assessments (lead_id, score, readiness_level) VALUES ($1, $2, $3) RETURNING id',
       [leadId, score, readinessLevel]
     );
     const assessmentId = assessmentResult.rows[0].id;
 
-    // Insert responses
     for (const response of responses) {
       await client.query(
         'INSERT INTO assessment_responses (assessment_id, question_id, answer) VALUES ($1, $2, $3)',
@@ -259,3 +254,4 @@ process.on('SIGINT', async () => {
   console.log('Database connection closed');
   process.exit(0);
 });
+
