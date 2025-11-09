@@ -67,24 +67,6 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
-  const getReadinessColor = (level: string) => {
-    switch (level) {
-      case 'priority': return 'text-green-400';
-      case 'co_creator_qualified': return 'text-blue-400';
-      case 'nurture': return 'text-yellow-400';
-      default: return 'text-gray-400';
-    }
-  };
-
-  const getReadinessLabel = (level: string) => {
-    switch (level) {
-      case 'priority': return 'Priority';
-      case 'co_creator_qualified': return 'Co-Creator Qualified';
-      case 'nurture': return 'Nurture';
-      default: return level;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-950 text-white p-8">
       <div className="max-w-7xl mx-auto">
