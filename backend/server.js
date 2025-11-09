@@ -76,22 +76,23 @@ async function initializeDatabase() {
 }
 
 // Initialize database on startup with retry logic
-async function initializeDatabaseWithRetry(retries = 5) {
+async function initializeDatabaseWithRetry(retries = 10, delay = 3000) {
   for (let i = 0; i < retries; i++) {
     try {
       await initializeDatabase();
+      console.log('Database initialized successfully!');
       return; // Success, exit retry loop
     } catch (err) {
-      console.log(`Database initialization attempt ${i + 1} failed, retrying...`);
+      console.log(`Database initialization attempt ${i + 1}/${retries} failed, retrying in ${delay/1000}s...`);
       if (i < retries - 1) {
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+        await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retry
       }
     }
   }
   console.log('Database initialization failed after all retries, but continuing with app startup');
 }
 
-// Initialize database on startup
+// Initialize database on startup (don't await to not block app startup)
 initializeDatabaseWithRetry();
 
 // API Routes
