@@ -11,8 +11,17 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// Serve static files from the React app build directory
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../build')));
+}
+
 // Initialize SQLite database
-const db = new sqlite3.Database(path.join(__dirname, 'auditgpt.db'), (err) => {
+const dbPath = process.env.NODE_ENV === 'production'
+  ? path.join(__dirname, 'cosmosaudit.db')
+  : path.join(__dirname, 'auditgpt.db');
+
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err);
   } else {
@@ -71,7 +80,7 @@ app.post('/api/leads', (req, res) => {
   }
 
   const sql = `INSERT INTO leads (email, name, company, role, phone) VALUES (?, ?, ?, ?, ?)`;
-  
+
   db.run(sql, [email, name, company, role, phone], function(err) {
     if (err) {
       if (err.message.includes('UNIQUE constraint failed')) {
@@ -101,7 +110,7 @@ app.post('/api/assessments', (req, res) => {
 
   // Insert assessment
   const assessmentSql = `INSERT INTO assessments (lead_id, score, readiness_level) VALUES (?, ?, ?)`;
-  
+
   db.run(assessmentSql, [leadId, score, readinessLevel], function(err) {
     if (err) {
       return res.status(500).json({ error: 'Failed to save assessment' });
@@ -121,8 +130,8 @@ app.post('/api/assessments', (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Failed to save responses' });
       }
-      res.json({ 
-        assessmentId, 
+      res.json({
+        assessmentId,
         message: 'Assessment saved successfully',
         score,
         readinessLevel
@@ -179,8 +188,8 @@ app.get('/api/stats', (req, res) => {
         stats.averageScore = Math.round(row.avg || 0);
 
         db.all(`
-          SELECT readiness_level, COUNT(*) as count 
-          FROM assessments 
+          SELECT readiness_level, COUNT(*) as count
+          FROM assessments
           GROUP BY readiness_level
         `, [], (err, rows) => {
           if (err) return res.status(500).json({ error: 'Database error' });
@@ -201,9 +210,19 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Catch all handler: send back React's index.html file for client-side routing
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build/index.html'));
+  });
+}
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Serving React app in production mode');
+  }
 });
 
 // Graceful shutdown
