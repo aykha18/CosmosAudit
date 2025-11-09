@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { CheckCircle, AlertTriangle, Target, Download, Share2, ArrowRight } from 'lucide-react';
 import { AssessmentResult, LeadData } from '../types';
 import RazorpayCheckout from './payment/RazorpayCheckout';
+import Toast from './ui/Toast';
+import { useToast } from '../hooks/useToast';
 
 interface AssessmentResultsProps {
   result: AssessmentResult;
@@ -11,16 +13,17 @@ interface AssessmentResultsProps {
 
 const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData }) => {
   const [showPayment, setShowPayment] = useState(false);
+  const { toasts, removeToast, success, error } = useToast();
 
   const handlePaymentSuccess = (paymentData: any) => {
     console.log('Payment successful:', paymentData);
     setShowPayment(false);
-    alert('🎉 Payment successful! Welcome to the Co-Creator Program!');
+    success('🎉 Payment successful! Welcome to the Co-Creator Program!');
   };
 
-  const handlePaymentError = (error: string) => {
-    console.error('Payment error:', error);
-    alert(`Payment failed: ${error}`);
+  const handlePaymentError = (errorMsg: string) => {
+    console.error('Payment error:', errorMsg);
+    error(`Payment failed: ${errorMsg}`);
   };
 
   const handlePaymentCancel = () => {
@@ -209,6 +212,16 @@ const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData 
           Share Results
         </button>
       </div>
+
+      {/* Toast notifications */}
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 };

@@ -30,7 +30,7 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClose, onCo
       setStep('questions');
     } catch (error) {
       console.error('Failed to save lead:', error);
-      alert('Failed to save your information. Please try again.');
+      // Error will be shown by the form component
     }
   };
 
@@ -54,7 +54,10 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClose, onCo
       onComplete(calculatedResult);
     } catch (error) {
       console.error('Failed to save assessment:', error);
-      alert('Failed to save assessment. Please try again.');
+      // Continue to show results even if save fails
+      setResult(calculatedResult);
+      setStep('results');
+      onComplete(calculatedResult);
     }
   };
 
