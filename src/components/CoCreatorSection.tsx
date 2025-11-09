@@ -56,7 +56,8 @@ const CoCreatorSection: React.FC<CoCreatorSectionProps> = ({ onStartAssessment }
 
           {/* Pricing */}
           <div className="text-center mb-8">
-            <div className="text-5xl md:text-6xl font-bold mb-2">₹57,851</div>
+            <div className="text-5xl md:text-6xl font-bold mb-2">₹45,567</div>
+            <div className="text-lg opacity-90 mb-1">$549 USD</div>
             <div className="text-lg opacity-90 line-through mb-2">Regular price: ₹1,66,000+</div>
             <p className="text-xl opacity-90">
               Assessment-Qualified • Lifetime Access • Shape the Product

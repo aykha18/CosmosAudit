@@ -7,6 +7,7 @@ import CoCreatorSection from './components/CoCreatorSection';
 import Footer from './components/Footer';
 import AssessmentModal from './components/AssessmentModal';
 import AdminDashboard from './pages/AdminDashboard';
+import PaymentTest from './pages/PaymentTest';
 import { AssessmentResult } from './types';
 import './App.css';
 
@@ -20,6 +21,8 @@ function App() {
       const hash = window.location.hash.slice(1);
       if (hash === 'admin') {
         setCurrentPage('admin');
+      } else if (hash === 'payment-test') {
+        setCurrentPage('payment-test');
       } else {
         setCurrentPage('home');
       }
@@ -36,6 +39,10 @@ function App() {
 
   if (currentPage === 'admin') {
     return <AdminDashboard />;
+  }
+
+  if (currentPage === 'payment-test') {
+    return <PaymentTest />;
   }
 
   return (

@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CheckCircle, AlertTriangle, Target, Download, Share2, ArrowRight } from 'lucide-react';
-import { AssessmentResult } from '../types';
+import { AssessmentResult, LeadData } from '../types';
+import RazorpayCheckout from './payment/RazorpayCheckout';
 
 interface AssessmentResultsProps {
   result: AssessmentResult;
   onClose: () => void;
+  leadData: LeadData;
 }
 
-const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result }) => {
+const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData }) => {
+  const [showPayment, setShowPayment] = useState(false);
+
+  const handlePaymentSuccess = (paymentData: any) => {
+    console.log('Payment successful:', paymentData);
+    setShowPayment(false);
+    alert('🎉 Payment successful! Welcome to the Co-Creator Program!');
+  };
+
+  const handlePaymentError = (error: string) => {
+    console.error('Payment error:', error);
+    alert(`Payment failed: ${error}`);
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPayment(false);
+  };
+
+  if (showPayment) {
+    return (
+      <RazorpayCheckout
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+        onCancel={handlePaymentCancel}
+        customerEmail={leadData.email}
+        customerName={leadData.name}
+        amount={45567}
+      />
+    );
+  }
   const getReadinessInfo = () => {
     switch (result.readinessLevel) {
       case 'priority':
@@ -139,9 +170,12 @@ const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result }) => {
             🎉 You Qualify for the Co-Creator Program!
           </h3>
           <p className="text-white/90 mb-6">
-            Join 10 visionaries shaping Web3 security. Limited spots at ₹57,851 (regular ₹1,66,000+)
+            Join 10 visionaries shaping Web3 security. Limited spots at ₹45,567 / $549 (regular ₹1,66,000+)
           </p>
-          <button className="bg-white text-audit-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all inline-flex items-center">
+          <button 
+            onClick={() => setShowPayment(true)}
+            className="bg-white text-audit-blue px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all inline-flex items-center"
+          >
             Claim Your Co-Creator Spot
             <ArrowRight className="ml-2 w-5 h-5" />
           </button>

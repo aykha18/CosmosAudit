@@ -189,8 +189,12 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClose, onCo
             />
           )}
           
-          {step === 'results' && result && (
-            <AssessmentResults result={result} onClose={handleClose} />
+          {step === 'results' && result && leadData && (
+            <AssessmentResults 
+              result={result} 
+              onClose={handleClose}
+              leadData={leadData}
+            />
           )}
         </div>
       </div>

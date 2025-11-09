@@ -109,6 +109,10 @@ async function initializeDatabaseWithRetry(retries = 10, delay = 3000) {
 
 initializeDatabaseWithRetry();
 
+// Import Razorpay routes
+const razorpayRoutes = require('./routes/razorpay');
+app.use('/api/payments/razorpay', razorpayRoutes);
+
 // API Routes
 
 // Save lead
