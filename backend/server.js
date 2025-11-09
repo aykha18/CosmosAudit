@@ -1,4 +1,6 @@
-require('dotenv').config();
+// Load .env file only if it exists (for local development)
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,6 +9,12 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// Debug: Log environment info (remove DATABASE_URL for security)
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Port:', PORT);
+console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+console.log('DATABASE_URL starts with:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 20) + '...' : 'undefined');
 
 // Middleware
 app.use(cors());
