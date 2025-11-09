@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import ProblemSection from './components/ProblemSection';
@@ -6,16 +6,37 @@ import SolutionSection from './components/SolutionSection';
 import CoCreatorSection from './components/CoCreatorSection';
 import Footer from './components/Footer';
 import AssessmentModal from './components/AssessmentModal';
+import AdminDashboard from './pages/AdminDashboard';
 import { AssessmentResult } from './types';
 import './App.css';
 
 function App() {
   const [isAssessmentOpen, setIsAssessmentOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
+
+  useEffect(() => {
+    // Simple hash-based routing
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash === 'admin') {
+        setCurrentPage('admin');
+      } else {
+        setCurrentPage('home');
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const handleAssessmentComplete = (result: AssessmentResult) => {
     console.log('Assessment completed:', result);
-    // In production, send to backend API
   };
+
+  if (currentPage === 'admin') {
+    return <AdminDashboard />;
+  }
 
   return (
     <div className="App bg-audit-blue min-h-screen">
