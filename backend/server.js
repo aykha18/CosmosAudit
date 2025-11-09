@@ -70,11 +70,29 @@ async function initializeDatabase() {
     console.log('Database tables initialized');
   } catch (err) {
     console.error('Error initializing database:', err);
+    // Don't exit process on database error - let the app start without database
+    // Railway will retry and the database will be available eventually
   }
 }
 
+// Initialize database on startup with retry logic
+async function initializeDatabaseWithRetry(retries = 5) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      await initializeDatabase();
+      return; // Success, exit retry loop
+    } catch (err) {
+      console.log(`Database initialization attempt ${i + 1} failed, retrying...`);
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+      }
+    }
+  }
+  console.log('Database initialization failed after all retries, but continuing with app startup');
+}
+
 // Initialize database on startup
-initializeDatabase();
+initializeDatabaseWithRetry();
 
 // API Routes
 
@@ -98,9 +116,11 @@ app.post('/api/leads', async (req, res) => {
         const existing = await pool.query('SELECT id FROM leads WHERE email = $1', [email]);
         return res.json({ leadId: existing.rows[0].id, message: 'Lead already exists' });
       } catch (dbErr) {
+        console.error('Database error:', dbErr);
         return res.status(500).json({ error: 'Database error' });
       }
     }
+    console.error('Failed to save lead:', err);
     res.status(500).json({ error: 'Failed to save lead' });
   }
 });
@@ -141,6 +161,7 @@ app.post('/api/assessments', async (req, res) => {
     });
   } catch (err) {
     await client.query('ROLLBACK');
+    console.error('Failed to save assessment:', err);
     res.status(500).json({ error: 'Failed to save assessment' });
   } finally {
     client.release();
@@ -153,6 +174,7 @@ app.get('/api/leads', async (req, res) => {
     const result = await pool.query('SELECT * FROM leads ORDER BY created_at DESC');
     res.json(result.rows);
   } catch (err) {
+    console.error('Failed to fetch leads:', err);
     res.status(500).json({ error: 'Failed to fetch leads' });
   }
 });
@@ -169,6 +191,7 @@ app.get('/api/leads/:id', async (req, res) => {
     const assessmentsResult = await pool.query('SELECT * FROM assessments WHERE lead_id = $1', [leadId]);
     res.json({ ...leadResult.rows[0], assessments: assessmentsResult.rows });
   } catch (err) {
+    console.error('Failed to fetch lead:', err);
     res.status(500).json({ error: 'Failed to fetch lead' });
   }
 });
@@ -199,6 +222,7 @@ app.get('/api/stats', async (req, res) => {
 
     res.json(stats);
   } catch (err) {
+    console.error('Database error:', err);
     res.status(500).json({ error: 'Database error' });
   }
 });
