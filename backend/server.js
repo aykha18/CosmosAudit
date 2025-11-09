@@ -26,6 +26,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Initialize PostgreSQL database
+if (!process.env.DATABASE_URL) {
+  console.error('CRITICAL: DATABASE_URL environment variable is not set!');
+  console.error('Available env vars:', Object.keys(process.env).filter(k => !k.includes('SECRET') && !k.includes('KEY')));
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
