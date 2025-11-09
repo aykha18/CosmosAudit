@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuditGPT - AI Smart Contract Security in Seconds</title>
+  <meta name="description" content="Stop losing millions to smart contract bugs. Get AI-powered security audits in seconds, not weeks. Join 500+ Web3 builders validating their code with AuditGPT.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0e27;
+      color: #e4e7eb;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      border-radius: 50%;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+      padding: 3rem 0;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.1);
+      color: #818cf8;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: #9ca3af;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .cta-form {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .cta-form input {
+      flex: 1;
+      min-width: 280px;
+      padding: 1rem 1.25rem;
+      border: 2px solid #374151;
+      background: rgba(17, 24, 39, 0.8);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .cta-form input:focus {
+      outline: none;
+      border-color: #6366f1;
+      background: rgba(17, 24, 39, 1);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
+    }
+    .trust-text {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.75rem;
+    }
+    
+    /* Problem Section */
+    .problem {
+      padding: 5rem 0;
+      background: #0f1629;
+    }
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .section-header p {
+      font-size: 1.125rem;
+      color: #9ca3af;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .stat-card {
+      background: rgba(17, 24, 39, 0.6);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #ef4444;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      color: #d1d5db;
+      font-size: 1rem;
+    }
+    
+    /* Solution Section */
+    .solution {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    }
+    .solution-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+    .solution-text h3 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .solution-text p {
+      color: #9ca3af;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .feature-list {
+      list-style: none;
+    }
+    .feature-list li {
+      padding: 0.75rem 0;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .feature-list li::before {
+      content: '✓';
+      color: #10b981;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+    .solution-visual {
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 2rem;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .demo-placeholder {
+      text-align: center;
+      color: #6b7280;
+    }
+    .demo-placeholder svg {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 1rem;
+    }
+    
+    /* How It Works */
+    .how-it-works {
+      padding: 5rem 0;
+      background: #0f1629;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .step {
+      background: rgba(17, 24, 39, 0.6);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      position: relative;
+    }
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 2rem;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+    .step h3 {
+      margin-top: 1rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+      font-size: 1.25rem;
+    }
+    .step p {
+      color: #9ca3af;
+      line-height: 1.7;
+    }
+    
+    /* Social Proof */
+    .social-proof {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    }
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .testimonial {
+      background: rgba(17, 24, 39, 0.6);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+    }
+    .testimonial-text {
+      color: #d1d5db;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .author-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+    .author-info h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .author-info p {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    /* Final CTA */
+    .final-cta {
+      padding: 5rem 0;
+      background: #0f1629;
+      text-align: center;
+    }
+    .final-cta h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .final-cta p {
+      font-size: 1.125rem;
+      color: #9ca3af;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .final-cta .cta-form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 2rem 0;
+      background: #0a0e27;
+      text-align: center;
+      border-top: 1px solid #1f2937;
+    }
+    footer p {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .solution-content {
+        grid-template-columns: 1fr;
+      }
+      .cta-form {
+        flex-direction: column;
+      }
+      .cta-form input {
+        min-width: 100%;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .section-header h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="badge">🚀 Early Access Now Open</span>
+        <h1>Stop Losing Millions to Smart Contract Bugs</h1>
+        <p>Get AI-powered security audits in seconds, not weeks. Detect vulnerabilities and ensure MiCA/SEC compliance before deployment.</p>
+        
+        <form class="cta-form" onsubmit="handleSubmit(event)">
+          <input type="email" id="email" placeholder="Enter your work email" required>
+          <button type="submit" class="btn-primary">Get Early Access</button>
+        </form>
+        <p class="trust-text">✓ Free for first 100 audits  ✓ No credit card required  ✓ 2-minute setup</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="problem">
+    <div class="container">
+      <div class="section-header">
+        <h2>The $3 Billion Problem</h2>
+        <p>Smart contract vulnerabilities cost Web3 projects billions annually. Traditional audits are too slow and expensive for most teams.</p>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">$3B+</div>
+          <div class="stat-label">Lost to hacks in 2022-2023</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$50K</div>
+          <div class="stat-label">Average cost of manual audit</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3-6 weeks</div>
+          <div class="stat-label">Time for traditional audits</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Section -->
+  <section class="solution">
+    <div class="container">
+      <div class="section-header">
+        <h2>Audit Your Contracts in 60 Seconds</h2>
+        <p>AuditGPT combines GPT-4 intelligence with battle-tested security tools to catch vulnerabilities before they cost you millions.</p>
+      </div>
+      
+      <div class="solution-content">
+        <div class="solution-text">
+          <h3>Security + Compliance in One Platform</h3>
+          <p>Upload your Solidity code and get instant analysis covering security vulnerabilities, regulatory compliance, and code quality.</p>
+          
+          <ul class="feature-list">
+            <li>AI-powered vulnerability detection (reentrancy, overflow, etc.)</li>
+            <li>MiCA, SEC, and FATF compliance mapping</li>
+            <li>Plain English explanations of your contract logic</li>
+            <li>Professional PDF reports for investors & regulators</li>
+            <li>API integration for CI/CD pipelines</li>
+          </ul>
+        </div>
+        
+        <div class="solution-visual">
+          <div class="demo-placeholder">
+            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="40" width="160" height="120" rx="8" stroke="#374151" stroke-width="2"/>
+              <line x1="40" y1="70" x2="120" y2="70" stroke="#6366f1" stroke-width="3"/>
+              <line x1="40" y1="90" x2="140" y2="90" stroke="#6366f1" stroke-width="3"/>
+              <line x1="40" y1="110" x2="100" y2="110" stroke="#6366f1" stroke-width="3"/>
+              <circle cx="160" cy="90" r="15" fill="#10b981"/>
+              <path d="M154 90L158 94L166 86" stroke="white" stroke-width="2" fill="none"/>
+            </svg>
+            <p>Interactive demo coming soon</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Three simple steps to secure your smart contracts</p>
+      </div>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Upload Your Code</h3>
+          <p>Paste your Solidity/Vyper contract or upload a file. We support all EVM-compatible chains.</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>AI Analyzes Everything</h3>
+          <p>Our system scans for vulnerabilities, checks compliance, and explains your contract logic in plain English.</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Actionable Report</h3>
+          <p>Download a detailed PDF report with severity ratings, fix recommendations, and compliance status.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="social-proof">
+    <div class="container">
+      <div class="section-header">
+        <h2>Trusted by Web3 Builders</h2>
+        <p>Join developers who are shipping secure contracts faster</p>
+      </div>
+      
+      <div class="testimonials">
+        <div class="testimonial">
+          <p class="testimonial-text">"Caught a critical reentrancy bug in 30 seconds that would have cost us $500K. This tool is a lifesaver."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SC</div>
+            <div class="author-info">
+              <h4>Sarah Chen</h4>
+              <p>CTO, DeFi Protocol</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial">
+          <p class="testimonial-text">"Finally, a tool that speaks both developer and legal language. The MiCA compliance mapping saved us weeks of work."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MR</div>
+            <div class="author-info">
+              <h4>Marcus Rodriguez</h4>
+              <p>Lead Dev, Web3 Startup</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial">
+          <p class="testimonial-text">"We integrated AuditGPT into our CI/CD pipeline. Every commit gets audited automatically. Game changer."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AK</div>
+            <div class="author-info">
+              <h4>Alex Kim</h4>
+              <p>Blockchain Engineer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Ready to Secure Your Contracts?</h2>
+      <p>Join our early access program. First 100 users get unlimited audits free for 3 months.</p>
+      
+      <form class="cta-form" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="Enter your work email" required>
+        <button type="submit" class="btn-primary">Get Early Access</button>
+      </form>
+      
+      <p class="trust-text" style="margin-top: 1rem;">No spam. Unsubscribe anytime. Limited spots available.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 AuditGPT. Building the future of Web3 security.</p>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const email = event.target.querySelector('input[type="email"]').value;
+      
+      // In production, send to your backend/email service
+      console.log('Email submitted:', email);
+      
+      // Show success message
+      alert('🎉 You\'re on the list! Check your email for next steps.');
+      event.target.reset();
+      
+      // Optional: Track conversion with analytics
+      // gtag('event', 'conversion', {'send_to': 'AW-XXXXX/XXXXX'});
+    }
+  </script>
+
+</body>
+</html>

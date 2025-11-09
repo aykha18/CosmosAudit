@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuditGPT - AI-Powered Smart Contract Security & Compliance</title>
+  <meta name="description" content="Instantly audit your smart contracts for security vulnerabilities and regulatory compliance with AI. Scan Solidity code for MiCA, SEC, and FATF violations before deployment.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      color: #e6edf3;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    /* Header */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(88, 166, 255, 0.1) 0%, transparent 70%);
+    }
+    header .container {
+      z-index: 2;
+    }
+    header h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #58a6ff, #f78166);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      color: #c9d1d9;
+      font-weight: 400;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(35, 134, 54, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #58a6ff;
+      padding: 1rem 2rem;
+      border: 2px solid #58a6ff;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background: #58a6ff;
+      color: white;
+    }
+    /* Problem Section */
+    .problem {
+      padding: 5rem 0;
+      background: #161b22;
+    }
+    .problem h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #f85149;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .stat-card {
+      background: #21262d;
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid #30363d;
+    }
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #f85149;
+      margin-bottom: 0.5rem;
+    }
+    .stat-text {
+      color: #c9d1d9;
+      font-size: 1.1rem;
+    }
+    /* Solution Section */
+    .solution {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    }
+    .solution h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #238636;
+    }
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .solution-card {
+      background: #21262d;
+      padding: 2.5rem;
+      border-radius: 16px;
+      border: 1px solid #30363d;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .solution-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .solution-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #58a6ff;
+    }
+    .solution-card p {
+      color: #c9d1d9;
+      line-height: 1.7;
+    }
+    /* Features Section */
+    .features {
+      padding: 5rem 0;
+      background: #161b22;
+    }
+    .features h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #d29922;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .feature-item {
+      background: #21262d;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #30363d;
+      transition: transform 0.3s ease;
+    }
+    .feature-item:hover {
+      transform: translateY(-3px);
+    }
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #58a6ff;
+    }
+    .feature-item h4 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #f0f6fc;
+    }
+    .feature-item p {
+      color: #c9d1d9;
+      font-size: 0.95rem;
+    }
+    /* How It Works */
+    .how-it-works {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    }
+    .how-it-works h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #238636;
+    }
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .step {
+      background: #21262d;
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      flex: 1;
+      min-width: 200px;
+      border: 1px solid #30363d;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #58a6ff;
+    }
+    .step-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #58a6ff;
+      margin-bottom: 1rem;
+    }
+    .step h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: #f0f6fc;
+    }
+    .step p {
+      color: #c9d1d9;
+    }
+    /* Testimonials */
+    .testimonials {
+      padding: 5rem 0;
+      background: #161b22;
+    }
+    .testimonials h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #d29922;
+    }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .testimonial {
+      background: #21262d;
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid #30363d;
+    }
+    .testimonial-text {
+      font-style: italic;
+      color: #c9d1d9;
+      margin-bottom: 1rem;
+    }
+    .testimonial-author {
+      font-weight: 600;
+      color: #58a6ff;
+    }
+    .testimonial-role {
+      color: #8b949e;
+      font-size: 0.9rem;
+    }
+    /* CTA Section */
+    .cta {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, #238636, #2ea043);
+      text-align: center;
+    }
+    .cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .cta p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #e6edf3;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cta-form input {
+      flex: 1;
+      min-width: 250px;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .cta-form button {
+      background: #0d1117;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .cta-form button:hover {
+      background: #161b22;
+    }
+    /* Footer */
+    footer {
+      padding: 3rem 0;
+      background: #0d1117;
+      text-align: center;
+      color: #8b949e;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #58a6ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover {
+      color: #79c0ff;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      .steps {
+        flex-direction: column;
+      }
+      .step:not(:last-child)::after {
+        content: '↓';
+        right: 50%;
+        top: 100%;
+        transform: translateX(50%);
+      }
+      .cta-form {
+        flex-direction: column;
+      }
+      .cta-form input {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Secure Your Smart Contracts with AI</h1>
+      <p>Detect vulnerabilities and ensure compliance with MiCA, SEC, and FATF regulations instantly. Join 500+ Web3 builders who trust AuditGPT for their security audits.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({ behavior: 'smooth' })">Start Free Audit</button>
+        <button class="btn-secondary" onclick="document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' })">See How It Works</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="problem">
+    <div class="container">
+      <h2>The Hidden Dangers in Web3</h2>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-number">$3B+</div>
+          <div class="stat-text">Lost to smart contract hacks in 2022-2023</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$25k–$100k</div>
+          <div class="stat-text">Cost of traditional security audits</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">Weeks</div>
+          <div class="stat-text">Time to complete manual audits</div>
+        </div>
+      </div>
+      <p style="text-align: center; font-size: 1.2rem; color: #c9d1d9; max-width: 800px; margin: 0 auto;">
+        Developers face mounting pressure from regulators like MiCA and SEC, yet most lack affordable tools to audit code for both security and compliance. Traditional audits are slow, expensive, and often miss emerging threats.
+      </p>
+    </div>
+  </section>
+
+  <section class="solution">
+    <div class="container">
+      <h2>Meet AuditGPT: Your AI Security Copilot</h2>
+      <div class="solution-grid">
+        <div class="solution-card">
+          <h3>🧠 AI-Powered Code Analysis</h3>
+          <p>GPT-4 explains your contract logic in plain English, identifying potential issues that static analyzers miss. Understand what your code does before deployment.</p>
+        </div>
+        <div class="solution-card">
+          <h3>🔐 Advanced Security Scanning</h3>
+          <p>Integrates Slither and Mythril to detect known vulnerabilities, reentrancy attacks, and logic flaws automatically.</p>
+        </div>
+        <div class="solution-card">
+          <h3>⚖️ Regulatory Compliance Engine</h3>
+          <p>Maps your code to MiCA, SEC, and FATF requirements, flagging violations before they become legal liabilities.</p>
+        </div>
+        <div class="solution-card">
+          <h3>📄 Instant Audit Reports</h3>
+          <p>Generate professional PDF reports in seconds, ready for investors, regulators, or your development team.</p>
+        </div>
+        <div class="solution-card">
+          <h3>🚀 Developer-First Experience</h3>
+          <p>Simple upload interface, API access for CI/CD integration, and affordable pricing starting at $99/month.</p>
+        </div>
+        <div class="solution-card">
+          <h3>🌐 Multi-Chain Support</h3>
+          <p>EVM-compatible chains (Ethereum, Polygon, Arbitrum) with plans for Solana and Cosmos expansion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Why Choose AuditGPT?</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <h4>Lightning Fast</h4>
+          <p>Get results in seconds, not weeks. Perfect for rapid development cycles.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h4>Comprehensive Coverage</h4>
+          <p>Security + compliance in one tool. No need for multiple services.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-brain"></i></div>
+          <h4>AI-Enhanced Accuracy</h4>
+          <p>Leverages GPT-4 for nuanced analysis beyond rule-based systems.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-dollar-sign"></i></div>
+          <h4>Cost Effective</h4>
+          <p>Save thousands compared to traditional audits. Freemium model for startups.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-users"></i></div>
+          <h4>Team Collaboration</h4>
+          <p>Share reports with stakeholders and track audit history.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-code"></i></div>
+          <h4>API Integration</h4>
+          <p>Seamlessly integrate into your development workflow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Upload Contract</h3>
+          <p>Paste your Solidity/Vyper code or upload a file. Support for multiple formats.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>AI Analysis</h3>
+          <p>Our system scans for vulnerabilities, explains logic, and checks compliance.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Results</h3>
+          <p>Download detailed report or integrate via API for automated workflows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <h2>What Early Users Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial">
+          <p class="testimonial-text">"AuditGPT caught a critical reentrancy bug that our manual review missed. Saved us from a potential $500k loss."</p>
+          <p class="testimonial-author">Sarah Chen</p>
+          <p class="testimonial-role">CTO, DeFi Protocol</p>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-text">"The compliance mapping to MiCA regulations is a game-changer. Finally, a tool that speaks both dev and legal."</p>
+          <p class="testimonial-author">Marcus Rodriguez</p>
+          <p class="testimonial-role">Lead Developer, Web3 Startup</p>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-text">"From upload to report in under 2 minutes. This is the future of smart contract auditing."</p>
+          <p class="testimonial-author">Alex Kim</p>
+          <p class="testimonial-role">Blockchain Engineer</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="container">
+      <h2>Ready to Secure Your Contracts?</h2>
+      <p>Join our waitlist for early access. Be among the first to experience AI-powered smart contract auditing.</p>
+      <form class="cta-form" onsubmit="alert('Thanks! You\'re now on the waitlist. We\'ll notify you when AuditGPT launches.'); return false;">
+        <input type="email" placeholder="Enter your email address" required />
+        <button type="submit">Join Waitlist</button>
+      </form>
+      <p style="margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.8);">No spam, unsubscribe anytime. Limited beta spots available.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Service</a>
+        <a href="mailto:founder@auditgpt.xyz">Contact</a>
+        <a href="#docs">Documentation</a>
+      </div>
+      <p>&copy; 2025 AuditGPT. All rights reserved. | Building the future of Web3 security.</p>
+    </div>
+  </footer>
+</body>
+</html>

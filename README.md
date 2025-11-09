@@ -1,46 +1,115 @@
-# Getting Started with Create React App
+# CosmosAudit Landing Page
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Modern React-based validation landing page for CosmosAudit, following the unitasa.in strategy.
 
-## Available Scripts
+## Strategy Overview
 
-In the project directory, you can run:
+This landing page implements a **validation-first approach** to test market demand before building the full product:
 
-### `npm start`
+### Key Elements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Hook** - Problem-focused headline addressing the $3B+ smart contract security crisis
+2. **Assessment Flow** - 10-question security readiness assessment to qualify leads
+3. **Co-Creator Program** - Limited to 10 seats at $697 (vs $2,000+ regular price)
+4. **Readiness Scoring** - Segments users into 3 tiers:
+   - **Priority (71-100%)**: Direct founder access, priority integration
+   - **Co-Creator Qualified (41-70%)**: Eligible for $697 program
+   - **Nurture (0-40%)**: Free resources and education
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Value Proposition
 
-### `npm test`
+- **Problem**: $3B+ lost to hacks, $50K+ audit costs, 3-6 week delays
+- **Solution**: AI-powered audits in 60 seconds, MiCA/SEC compliance, $99/month
+- **Urgency**: Limited to 10 co-creator seats with countdown
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+```bash
+cd auditgpt-landing
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Project Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+├── components/
+│   ├── HeroSection.tsx           # Hook + CTA
+│   ├── ProblemSection.tsx        # $3B problem statement
+│   ├── SolutionSection.tsx       # CosmosAudit features
+│   ├── CoCreatorSection.tsx      # $697 limited offer
+│   ├── AssessmentModal.tsx       # Assessment orchestrator
+│   ├── LeadCaptureForm.tsx       # Lead capture (step 1)
+│   ├── AssessmentQuestions.tsx   # 10 questions (step 2)
+│   └── AssessmentResults.tsx     # Results + CTA (step 3)
+├── types/
+│   └── index.ts                  # TypeScript interfaces
+└── App.tsx                       # Main app
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Assessment Flow
 
-### `npm run eject`
+1. **Lead Capture**: Name, email, company, role
+2. **10 Questions**: Security awareness, compliance needs, technical readiness, budget
+3. **Results**: Score, readiness level, personalized recommendations
+4. **CTA**: Co-creator offer (if qualified) or free resources
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Customization
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Update Co-Creator Pricing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Edit `src/components/CoCreatorSection.tsx`:
+```typescript
+const [seatsRemaining, setSeatsRemaining] = useState(10);
+const totalSeats = 10;
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Modify Assessment Questions
 
-## Learn More
+Edit `src/components/AssessmentQuestions.tsx`:
+```typescript
+const questions: AssessmentQuestion[] = [
+  // Add/modify questions here
+];
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Change Scoring Logic
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Edit `src/components/AssessmentModal.tsx`:
+```typescript
+const calculateAssessmentResult = (responses, lead) => {
+  // Customize scoring algorithm
+};
+```
+
+## Next Steps
+
+1. **Backend Integration**: Connect to your API for lead capture and assessment storage
+2. **Payment Integration**: Add Stripe/Razorpay for co-creator payments
+3. **Analytics**: Integrate Google Analytics, Facebook Pixel for conversion tracking
+4. **Email Automation**: Set up drip campaigns based on readiness level
+5. **A/B Testing**: Test different headlines, CTAs, and pricing
+
+## Deployment
+
+```bash
+npm run build
+```
+
+Deploy the `build/` folder to:
+- Vercel
+- Netlify
+- AWS S3 + CloudFront
+- Railway
+
+## Tech Stack
+
+- **React 18** with TypeScript
+- **Tailwind CSS** for styling
+- **Lucide React** for icons
+- **Axios** for API calls (ready to integrate)
+
+## License
+
+MIT
