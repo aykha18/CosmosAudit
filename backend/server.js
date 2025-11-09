@@ -19,7 +19,11 @@ if (process.env.NODE_ENV === 'production') {
 // Initialize PostgreSQL database
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  connectionTimeoutMillis: 5000, // 5 second timeout
+  query_timeout: 10000, // 10 second query timeout
+  idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+  max: 10, // Maximum 10 connections in pool
 });
 
 // Test database connection
@@ -29,7 +33,7 @@ pool.on('connect', () => {
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
-  process.exit(-1);
+  // Don't exit process - let the app continue running
 });
 
 // Initialize database tables
