@@ -19,12 +19,10 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClose, onCo
   const [leadData, setLeadData] = useState<LeadData | null>(null);
   const [leadId, setLeadId] = useState<number | null>(null);
   const [result, setResult] = useState<AssessmentResult | null>(null);
-  const [saving, setSaving] = useState(false);
 
   if (!isOpen) return null;
 
   const handleLeadCapture = async (data: LeadData) => {
-    setSaving(true);
     try {
       const response = await api.saveLead(data);
       setLeadId(response.leadId);
@@ -33,17 +31,14 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClose, onCo
     } catch (error) {
       console.error('Failed to save lead:', error);
       alert('Failed to save your information. Please try again.');
-    } finally {
-      setSaving(false);
     }
   };
 
   const handleQuestionsComplete = async (questionResponses: AssessmentResponse[]) => {
-    setSaving(true);
     try {
       // Calculate score and generate result
       const calculatedResult = calculateAssessmentResult(questionResponses, leadData!);
-      
+
       // Save to backend
       if (leadId) {
         await api.saveAssessment({
@@ -53,15 +48,13 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ isOpen, onClose, onCo
           responses: questionResponses
         });
       }
-      
+
       setResult(calculatedResult);
       setStep('results');
       onComplete(calculatedResult);
     } catch (error) {
       console.error('Failed to save assessment:', error);
       alert('Failed to save assessment. Please try again.');
-    } finally {
-      setSaving(false);
     }
   };
 
