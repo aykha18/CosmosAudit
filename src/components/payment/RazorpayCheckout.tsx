@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CreditCard, Smartphone, Building, ArrowLeft, Loader } from 'lucide-react';
+import { CreditCard, Smartphone, ArrowLeft, Loader } from 'lucide-react';
 
 interface RazorpayCheckoutProps {
   onSuccess: (paymentData: any) => void;
@@ -75,7 +75,8 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
 
   const createRazorpayOrder = async () => {
     try {
-      const API_BASE = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:8080';
+      // In production, use relative URL. In development, use localhost:8080
+      const API_BASE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
       const response = await fetch(`${API_BASE}/api/payments/razorpay/create-order`, {
         method: 'POST',
         headers: {
@@ -168,7 +169,8 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
 
   const handlePaymentSuccess = async (razorpayResponse: any, orderData: any) => {
     try {
-      const API_BASE = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:8080';
+      // In production, use relative URL. In development, use localhost:8080
+      const API_BASE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
       const verifyResponse = await fetch(`${API_BASE}/api/payments/razorpay/verify-payment`, {
         method: 'POST',
         headers: {
