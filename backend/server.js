@@ -21,9 +21,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the React app build directory
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../build')));
-}
+// Serve in both development and production for Railway compatibility
+app.use(express.static(path.join(__dirname, '../build')));
 
 // Initialize PostgreSQL database
 if (!process.env.DATABASE_URL) {
@@ -107,7 +106,10 @@ async function initializeDatabaseWithRetry(retries = 10, delay = 3000) {
   console.log('Database initialization failed after all retries, but continuing with app startup');
 }
 
-initializeDatabaseWithRetry();
+// Initialize database but don't block server startup
+initializeDatabaseWithRetry().catch(err => {
+  console.error('Database initialization failed:', err);
+});
 
 // Import Razorpay routes
 const razorpayRoutes = require('./routes/razorpay');
@@ -250,11 +252,40 @@ app.get('/health', (req, res) => {
 });
 
 // Catch all handler: send back React's index.html file for client-side routing
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../build/index.html'));
-  });
-}
+app.get('*', (req, res) => {
+  const indexPath = path.join(__dirname, '../build/index.html');
+  console.log(`Serving index.html from: ${indexPath}`);
+  console.log(`Index file exists: ${require('fs').existsSync(indexPath)}`);
+
+  if (require('fs').existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Fallback: serve a basic HTML page if build doesn't exist
+    console.log('Build directory not found, serving fallback HTML');
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>CosmoAudit</title>
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+            .container { max-width: 600px; margin: 0 auto; }
+            h1 { color: #333; }
+            p { color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🚀 CosmoAudit</h1>
+            <p>AI-Powered Smart Contract Security Auditing</p>
+            <p>Application is starting up. Please refresh in a moment.</p>
+            <p><small>Status: Build in progress</small></p>
+          </div>
+        </body>
+      </html>
+    `);
+  }
+});
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
