@@ -32,23 +32,23 @@ RUN useradd --create-home --shell /bin/bash app \
 # Switch to non-root user
 USER app
 
-# Set working directory
-WORKDIR /app
-
 # Copy Python packages from builder stage
 COPY --from=builder /root/.local /home/app/.local
 
 # Add local Python packages to PATH
 ENV PATH=/home/app/.local/bin:$PATH
 
-# Set Python path to include /app
-ENV PYTHONPATH=/app
-
 # Copy application code
 COPY agent_service/ ./agent_service/
 
+# Set working directory to agent_service
+WORKDIR /app/agent_service
+
+# Set Python path to include parent directory for relative imports
+ENV PYTHONPATH=/app
+
 # Create artifacts directory
-RUN mkdir -p artifacts
+RUN mkdir -p /app/artifacts
 
 # Set default environment variables (can be overridden)
 ENV OPENAI_API_KEY=""
@@ -63,4 +63,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Start the application
-CMD ["python", "agent_service/start.py"]
+CMD ["python", "start.py"]
