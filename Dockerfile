@@ -1,4 +1,6 @@
 # Multi-stage build for CosmoAudit Agent Service
+# This file is for the AGENT SERVICE only.
+# Do NOT use this for the main web application deployment.
 # Stage 1: Builder stage for Python dependencies
 FROM python:3.11-slim as builder
 
