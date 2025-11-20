@@ -38,11 +38,12 @@ COPY --from=builder /root/.local /home/app/.local
 # Add local Python packages to PATH
 ENV PATH=/home/app/.local/bin:$PATH
 
+# Create agent_service directory and set as working directory
+RUN mkdir -p /app/agent_service
+WORKDIR /app/agent_service
+
 # Copy application code
 COPY agent_service/ .
-
-# Set working directory to agent_service
-WORKDIR /app/agent_service
 
 # Set Python path to include parent directory for relative imports
 ENV PYTHONPATH=/app
