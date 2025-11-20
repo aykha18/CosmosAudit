@@ -1,0 +1,85 @@
+About Sherlock
+Sherlock believes that a sound currency and functioning financial system should be basic human rights. Sherlock’s mission is to help create an open, uncensorable financial system that is secure enough for billions of people to trust with their life savings. 
+
+Traditional blockchain security reviews are a good start, but it’s not enough. That's why Sherlock provides protocols with state-of-the-art, incentive-aligned audit contests, bug bounties and smart contract coverage. 
+
+Sherlock is the only security provider that includes a warranty after each audit. Sherlock customers get up to $500k of bug bounty and exploit coverage for the first month of launch after every audit.
+
+Sherlock is also the only security provider to serve a customer’s full security needs, including collaborative audits, audit contests, bug bounties, and coverage. 
+
+Sherlock’s audit contests combine the best of traditional auditing with a competitive twist that results in hundreds of eyes looking at the codebase and some of the best security experts in the world surfacing issues that traditional audits miss. 
+
+Sherlock is the leader in auditing, running more public audits than any other provider last year. The Ethereum Foundation, Aave, Optimism, Cosmos, MakerDAO (now Sky) and the biggest crypto teams in the world choose Sherlock for their security needs.
+
+Join Sherlock’s elite team on the ground floor, backed by some of the best Web3 and Silicon Valley VC firms such as Alliance, Archetype, IDEO, CoinFund, Lattice, Spartan, A Capital, and many others. 
+
+Sherlock's Culture
+Sherlock's culture is fast-moving, intense, and not right for everyone. Here are some common attributes among historically successful team members at Sherlock:
+
+Mission-focus
+Anyone in this for reasons other than creating the best financial coordination mechanism in history will either get too demotivated to last through multi-year bear markets or get too distracted during the frothy bull markets.
+
+Willingness to work long, hard and smart
+If Sherlock has any advantage, it is the willingness to work harder and think with more discipline than anyone else. This includes thinking from first principles about all important decisions and always thinking in tradeoffs and bets. 
+
+Owner mentality
+Team members get ownership in Sherlock after a short time in this role, and each is expected to act like an owner of a Michelin-star restaurant where no detail is too small.
+
+Builder mentality
+Everyone at Sherlock is deep in the arena getting their hands dirty and this is a vulnerable position. There are no pure "idea people" or pure managers at Sherlock; everyone is in execution mode first and foremost.
+
+Customer focus
+It is too easy to sit behind a computer and build in an echo chamber. We must go out of our way to experience the customer's viewpoint as often as possible.
+
+Professional athlete mentality
+Professional athletes opt in to a high-performance, meritocratic culture. This creates an environment that brings out the best in people and rewards each for their respective performance. But it's also an environment where being in the 70th percentile in your role means you will have a short tenure on the team. 
+
+Comfort with directness and transparency
+You must be comfortable giving direct feedback to others and receiving direct feedback yourself. "Not ruffling feathers" comes at the expense of moving in a suboptimal direction for too long. Sherlock is extremely transparent internally (and with customers) which means you can get involved in decisions made in any part of Sherlock. 
+
+The Role
+We believe the blockchain security space is going to be fundamentally different in the next 6-24 months. Blockchain security is one of the areas of software that has experienced very little AI-related change in the last 2-3 years. We believe this is, in part, due to the novelty and complexity of blockchain exploits. As AI improves, we expect the blockchain security space to undergo massive change. 
+
+Sherlock wants to lead this change and disrupt its current business model. This is where Sherlock needs your help. 
+
+No one knows how effective AI can be in finding blockchain vulnerabilities. Few have put significant resources into this effort. Even fewer have worked with true AI and blockchain security experts on this problem. Sherlock’s goal is to change that. 
+
+We are looking for someone who has already proven themselves to be at the leading edge of building AI applications in production. This person has enough of a research background to intuit the major areas to explore. And they have experience working with LLMs to build real-world applications. If you're serious about applying for this job and you've read this far, please email jack at sherlock dot xyz with 4-sentence answers to each of these three questions: What AI application did you build or work on that got the most usage? What excites you about this position specifically? Why should Sherlock select you over hundreds of other applicants?
+
+Your role is simple:
+
+Lead a small team within Sherlock to build the best AI vulnerability-detecting application for blockchain code, beginning with Solidity code.
+
+Sherlock already has a rockstar team of developers and security researchers who can shore up your weaknesses in certain areas and ship a useful, production-ready application. And we are willing to invest deeply in your team’s success, whatever it may require. 
+
+In terms of the skills required in your role, an understanding of cutting-edge AI/LLM technologies is a must. A desire to keep pushing the boundaries of AI and LLM capabilities is important. And you should be willing to put the customer first and build an application that truly serves their needs, even if it doesn’t align with your original vision of an ideal AI application. 
+
+A strong understanding of crypto, DeFi, or smart contract security is a plus, but it's not needed to get started in this role.
+
+Ultimately, your role is to do what no one else has accomplished so far: build a vulnerability-detecting AI in the crypto space that mitigates or entirely removes the need for human security researchers, saving teams hundreds of thousands of dollars and months of delays. 
+
+The day-to-day responsibilities of this role include:
+- Staying on top of cutting-edge research in the AI and LLM space (5x weight)
+- Understanding the nature of blockchain and smart contract vulnerabilities to create solutions (8x weight)
+- Working with Sherlock’s developers and security researchers to architect an enterprise-grade application that can detect vulnerabilities in a way that is useful for blockchain teams (10x weight)
+- Being extremely hungry/driven and ready to wear a different hat on any given day to help Sherlock succeed (5x weight)
+
+Requirements
+- Demonstrated knowledge of cutting-edge AI and LLM research
+- Eager attitude towards learning about crypto and blockchain vulnerabilities
+- Demonstrated experience in building at least one AI/LLM application at scale
+
+Nice to Haves
+- Some knowledge of crypto/engineering/auditing to converse with prospective customers
+- Proficiency in Solidity
+- Proficiency in blockchain security
+
+What's in it for you
+- Attractive base (payable in fiat or crypto) + material tokens/equity + benefits
+- Flexible time-off policy
+- Great healthcare
+- Multiple offsites each year in places like France, Argentina, Thailand, etc.
+- Lead the first team to apply AI to a massive, growing industry that has seen little AI disruption so far
+- Root access to the decision-making process/criteria in all areas of Sherlock and the ability to work directly with the founders
+- Move quickly and get stuff done on a small, elite team that has already made a big impact in the crypto space
+- Play a huge role in defining the future of Sherlock and accomplishing the goal of making crypto/DeFi accessible to everyone

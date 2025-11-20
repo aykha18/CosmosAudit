@@ -2,6 +2,7 @@ import axios from 'axios';
 import { LeadData, AssessmentResponse } from '../types';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
+const AGENT_API_URL = process.env.REACT_APP_AGENT_API_URL || 'http://localhost:8000/api/v1';
 
 export const api = {
   // Save lead
@@ -36,6 +37,24 @@ export const api = {
   // Get stats
   async getStats() {
     const response = await axios.get(`${API_URL}/stats`);
+    return response.data;
+  },
+
+  // Audit API functions
+  async runAudit(auditRequest: {
+    repo_url?: string;
+    branch?: string;
+    contract_files?: string[];
+    contract_paths?: string[];
+    analysis_type: 'repo' | 'files';
+    run_explainer?: boolean;
+  }) {
+    const response = await axios.post(`${AGENT_API_URL}/audit`, auditRequest);
+    return response.data;
+  },
+
+  async getAuditStatus(runId: string) {
+    const response = await axios.get(`${AGENT_API_URL}/audit/${runId}`);
     return response.data;
   }
 };

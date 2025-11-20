@@ -6,6 +6,8 @@ import SolutionSection from './components/SolutionSection';
 import CoCreatorSection from './components/CoCreatorSection';
 import Footer from './components/Footer';
 import AssessmentModal from './components/AssessmentModal';
+import AuditRequestForm from './components/AuditRequestForm';
+import AuditResults from './components/AuditResults';
 import AdminDashboard from './pages/AdminDashboard';
 import PaymentTest from './pages/PaymentTest';
 import { AssessmentResult } from './types';
@@ -14,6 +16,7 @@ import './App.css';
 function App() {
   const [isAssessmentOpen, setIsAssessmentOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
+  const [auditResult, setAuditResult] = useState<any>(null);
 
   useEffect(() => {
     // Simple hash-based routing
@@ -23,6 +26,8 @@ function App() {
         setCurrentPage('admin');
       } else if (hash === 'payment-test') {
         setCurrentPage('payment-test');
+      } else if (hash === 'audit') {
+        setCurrentPage('audit');
       } else {
         setCurrentPage('home');
       }
@@ -43,6 +48,43 @@ function App() {
 
   if (currentPage === 'payment-test') {
     return <PaymentTest />;
+  }
+
+  if (currentPage === 'audit') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="max-w-4xl w-full">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Direct Audit Access</h1>
+            <p className="text-gray-600">Test the AI-powered smart contract auditing system</p>
+            <button
+              onClick={() => {
+                window.location.hash = '';
+                setAuditResult(null);
+              }}
+              className="text-blue-600 hover:text-blue-800 underline mt-2"
+            >
+              ← Back to Home
+            </button>
+          </div>
+          {auditResult ? (
+            <AuditResults
+              result={auditResult}
+              onClose={() => setAuditResult(null)}
+            />
+          ) : (
+            <AuditRequestForm
+              isOpen={true}
+              onClose={() => window.location.hash = ''}
+              onAuditComplete={(result) => {
+                console.log('Audit completed:', result);
+                setAuditResult(result);
+              }}
+            />
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (

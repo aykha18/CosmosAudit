@@ -1,0 +1,46 @@
+```mermaid
+graph TB
+    subgraph "User Layer"
+        U[User]
+    end
+
+    subgraph "Frontend Layer"
+        FE[React Frontend]
+        FE --> |Assessment Flow| U
+        FE --> |Audit Request| AS
+    end
+
+    subgraph "Backend Layer"
+        BE[Node.js Backend]
+        DB[(PostgreSQL)]
+        BE --> DB
+        FE --> |Lead/Assessment Data| BE
+    end
+
+    subgraph "Agent Service Layer"
+        AS[FastAPI Agent Service]
+        AC[Agent Core]
+        TW[Tool Wrappers]
+        AS --> AC
+        AC --> TW
+    end
+
+    subgraph "External Services"
+        GIT[Git Repositories]
+        OPENAI[OpenAI API]
+        VDB[(Vector DB)]
+        STORAGE[Artifact Storage]
+    end
+
+    TW --> |Clone| GIT
+    TW --> |AI Analysis| OPENAI
+    TW --> |RAG Search| VDB
+    TW --> |Persist Results| STORAGE
+
+    subgraph "Infrastructure"
+        DOCKER[Docker Containers]
+        K8S[Kubernetes/Orchestration]
+        AS --> DOCKER
+        DOCKER --> K8S
+    end
+```
