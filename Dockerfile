@@ -41,11 +41,19 @@ COPY --from=builder /root/.local /home/app/.local
 # Add local Python packages to PATH
 ENV PATH=/home/app/.local/bin:$PATH
 
+# Set Python path to include /app
+ENV PYTHONPATH=/app
+
 # Copy application code
-COPY agent_service/ .
+COPY agent_service/ ./agent_service/
 
 # Create artifacts directory
 RUN mkdir -p artifacts
+
+# Set default environment variables (can be overridden)
+ENV OPENAI_API_KEY=""
+ENV ARTIFACTS_DIR="/app/artifacts"
+ENV LOG_LEVEL="INFO"
 
 # Expose port
 EXPOSE 8000
@@ -55,4 +63,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Start the application
-CMD ["python", "start.py"]
+CMD ["python", "agent_service/start.py"]

@@ -19,8 +19,9 @@ class Config:
     @classmethod
     def validate(cls) -> None:
         """Validate required configuration on startup."""
-        if not cls.OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
+        # OPENAI_API_KEY is now optional at startup (validated when used)
+        # if not cls.OPENAI_API_KEY:
+        #     raise ValueError("OPENAI_API_KEY environment variable is required")
 
         # Validate log level
         if not hasattr(logging, cls.LOG_LEVEL.upper()):
