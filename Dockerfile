@@ -39,7 +39,7 @@ COPY --from=builder /root/.local /home/app/.local
 ENV PATH=/home/app/.local/bin:$PATH
 
 # Copy application code
-COPY agent_service/ ./agent_service/
+COPY agent_service/ .
 
 # Set working directory to agent_service
 WORKDIR /app/agent_service

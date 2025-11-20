@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="CosmoAudit Agent Service",
     description="AI-powered smart contract security audit service",
-    version="1.0.0"
+    version="1.0.1"  # Updated for Railway deployment
 )
 
 # Add CORS middleware
