@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { CheckCircle, AlertTriangle, Target, Download, Share2, ArrowRight } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Target, Download, Share2, ArrowRight, Shield, Zap } from 'lucide-react';
 import { AssessmentResult, LeadData } from '../types';
 import RazorpayCheckout from './payment/RazorpayCheckout';
 import Toast from './ui/Toast';
 import { useToast } from '../hooks/useToast';
+import AuditRequestForm from './AuditRequestForm';
+import AuditResults from './AuditResults';
 
 interface AssessmentResultsProps {
   result: AssessmentResult;
@@ -13,6 +15,9 @@ interface AssessmentResultsProps {
 
 const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData }) => {
   const [showPayment, setShowPayment] = useState(false);
+  const [showAuditForm, setShowAuditForm] = useState(false);
+  const [auditResult, setAuditResult] = useState<any>(null);
+  const [showAuditResults, setShowAuditResults] = useState(false);
   const { toasts, removeToast, success, error } = useToast();
 
   const handlePaymentSuccess = (paymentData: any) => {
@@ -28,6 +33,25 @@ const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData 
 
   const handlePaymentCancel = () => {
     setShowPayment(false);
+  };
+
+  const handleAuditRequest = () => {
+    setShowAuditForm(true);
+  };
+
+  const handleAuditComplete = (result: any) => {
+    setAuditResult(result);
+    setShowAuditResults(true);
+    success('🎉 AI Audit completed successfully!');
+  };
+
+  const handleAuditClose = () => {
+    setShowAuditForm(false);
+  };
+
+  const handleAuditResultsClose = () => {
+    setShowAuditResults(false);
+    setAuditResult(null);
   };
 
   if (showPayment) {
@@ -201,6 +225,27 @@ const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData 
         </div>
       )}
 
+      {/* AI Audit Section */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 mb-8 text-center">
+        <Shield className="w-12 h-12 text-white mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-white mb-3">
+          🚀 Ready for AI-Powered Security Audit?
+        </h3>
+        <p className="text-white/90 mb-6">
+          Get detailed vulnerability analysis, AI explanations, and remediation suggestions for your smart contracts.
+        </p>
+        <button
+          onClick={handleAuditRequest}
+          className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all inline-flex items-center"
+        >
+          <Zap className="w-5 h-5 mr-2" />
+          Start AI Security Audit
+        </button>
+        <p className="text-white/75 text-sm mt-4">
+          ⚡ Advanced static analysis • AI explanations • Remediation guidance
+        </p>
+      </div>
+
       {/* Action Buttons */}
       <div className="flex gap-4 mt-8">
         <button className="flex-1 px-6 py-3 border border-gray-700 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center justify-center">
@@ -212,6 +257,21 @@ const AssessmentResults: React.FC<AssessmentResultsProps> = ({ result, leadData 
           Share Results
         </button>
       </div>
+
+      {/* Audit Request Modal */}
+      <AuditRequestForm
+        isOpen={showAuditForm}
+        onClose={handleAuditClose}
+        onAuditComplete={handleAuditComplete}
+      />
+
+      {/* Audit Results Modal */}
+      {auditResult && (
+        <AuditResults
+          result={auditResult}
+          onClose={handleAuditResultsClose}
+        />
+      )}
 
       {/* Toast notifications */}
       {toasts.map(toast => (
