@@ -44,18 +44,34 @@ export const api = {
   async runAudit(auditRequest: {
     repo_url?: string;
     branch?: string;
-    contract_files?: string[];
-    contract_paths?: string[];
+    contract_files?: string[] | undefined;
+    contract_paths?: string[] | undefined;
     analysis_type: 'repo' | 'files';
     run_explainer?: boolean;
   }) {
-    const response = await axios.post(`${AGENT_API_URL}/audit`, auditRequest);
-    return response.data;
+    try {
+      const response = await axios.post(`${AGENT_API_URL}/audit`, auditRequest);
+      return response.data;
+    } catch (error: any) {
+      // Handle agent service not available
+      if (error.code === 'ERR_BLOCKED_BY_CLIENT' || error.code === 'ERR_NETWORK' || !AGENT_API_URL || AGENT_API_URL.includes('localhost')) {
+        throw new Error('Audit service is currently not available. Please try again later.');
+      }
+      throw error;
+    }
   },
 
   async getAuditStatus(runId: string) {
-    const response = await axios.get(`${AGENT_API_URL}/audit/${runId}`);
-    return response.data;
+    try {
+      const response = await axios.get(`${AGENT_API_URL}/audit/${runId}`);
+      return response.data;
+    } catch (error: any) {
+      // Handle agent service not available
+      if (error.code === 'ERR_BLOCKED_BY_CLIENT' || error.code === 'ERR_NETWORK' || !AGENT_API_URL || AGENT_API_URL.includes('localhost')) {
+        throw new Error('Audit service is currently not available. Please try again later.');
+      }
+      throw error;
+    }
   }
 };
 
