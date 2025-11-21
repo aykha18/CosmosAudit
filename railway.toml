@@ -1,3 +1,7 @@
+# Railway configuration for CosmoAudit
+# This file configures different build settings for different services
+
+# Default build settings (for services without specific config)
 [build]
 builder = "nixpacks"
 
@@ -7,15 +11,12 @@ healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 
-[[services]]
-id = "cusmoaudit-web"
-name = "CusmoAudit-Web"
+# Service-specific configurations
+[services.cusmoaudit-web]
 builder = "nixpacks"
 buildCommand = "npm run build"
 startCommand = "npm start"
 
-[[services]]
-id = "cosmosaudit"
-name = "CosmosAudit"
+[services.cosmosaudit]
 builder = "dockerfile"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "Dockerfile.backup"
