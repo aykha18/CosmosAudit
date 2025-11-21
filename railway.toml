@@ -2,7 +2,7 @@
 # Main web application service (Node.js + React)
 
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
 
 [deploy]
 healthcheckPath = "/health"
