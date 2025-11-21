@@ -1,6 +1,11 @@
 # Multi-stage build for CosmoAudit Agent Service
 # This file is for the AGENT SERVICE only.
 # Do NOT use this for the main web application deployment.
+#
+# Railway Deployment Setup:
+# - CosmosAudit service: Uses this Dockerfile (Python/FastAPI agent)
+# - CusmoAudit-Web service: Should use Nixpacks builder (Node.js/React main app)
+#   Set Builder to "Nixpacks" in Railway dashboard to force Node.js detection
 # Stage 1: Builder stage for Python dependencies
 FROM python:3.11-slim as builder
 
