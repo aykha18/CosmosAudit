@@ -25,19 +25,27 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../build')));
 
 // Initialize PostgreSQL database
-if (!process.env.DATABASE_URL) {
-  console.error('CRITICAL: DATABASE_URL environment variable is not set!');
-  console.error('Available env vars:', Object.keys(process.env).filter(k => !k.includes('SECRET') && !k.includes('KEY')));
-}
+let pool = null;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 5000,
+    query_timeout: 10000,
+    idleTimeoutMillis: 30000,
+    max: 10,
+  });
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 5000,
-  query_timeout: 10000,
-  idleTimeoutMillis: 30000,
-  max: 10,
-});
+  pool.on('connect', () => {
+    console.log('Connected to PostgreSQL database');
+  });
+
+  pool.on('error', (err) => {
+    console.error('Unexpected error on idle client', err);
+  });
+} else {
+  console.warn('DATABASE_URL not set - database features will be disabled');
+}
 
 pool.on('connect', () => {
   console.log('Connected to PostgreSQL database');
@@ -49,6 +57,11 @@ pool.on('error', (err) => {
 
 // Initialize database tables
 async function initializeDatabase() {
+  if (!pool) {
+    console.log('Database not configured - skipping initialization');
+    return;
+  }
+
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS leads (
@@ -119,6 +132,10 @@ app.use('/api/payments/razorpay', razorpayRoutes);
 
 // Save lead
 app.post('/api/leads', async (req, res) => {
+  if (!pool) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+
   const { email, name, company, role, phone } = req.body;
 
   if (!email || !name) {
@@ -148,6 +165,10 @@ app.post('/api/leads', async (req, res) => {
 
 // Save assessment
 app.post('/api/assessments', async (req, res) => {
+  if (!pool) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+
   const { leadId, score, readinessLevel, responses } = req.body;
 
   if (!leadId || score === undefined || !readinessLevel || !responses) {
@@ -189,6 +210,10 @@ app.post('/api/assessments', async (req, res) => {
 
 // Get all leads
 app.get('/api/leads', async (req, res) => {
+  if (!pool) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+
   try {
     const result = await pool.query('SELECT * FROM leads ORDER BY created_at DESC');
     res.json(result.rows);
@@ -200,6 +225,10 @@ app.get('/api/leads', async (req, res) => {
 
 // Get lead with assessments
 app.get('/api/leads/:id', async (req, res) => {
+  if (!pool) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+
   const leadId = req.params.id;
   try {
     const leadResult = await pool.query('SELECT * FROM leads WHERE id = $1', [leadId]);
@@ -217,6 +246,10 @@ app.get('/api/leads/:id', async (req, res) => {
 
 // Get assessment stats
 app.get('/api/stats', async (req, res) => {
+  if (!pool) {
+    return res.status(503).json({ error: 'Database not configured' });
+  }
+
   try {
     const stats = {};
 
@@ -297,9 +330,11 @@ app.listen(PORT, '0.0.0.0', () => {
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('Closing database connection...');
-  await pool.end();
-  console.log('Database connection closed');
+  if (pool) {
+    console.log('Closing database connection...');
+    await pool.end();
+    console.log('Database connection closed');
+  }
   process.exit(0);
 });
 

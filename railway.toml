@@ -1,7 +1,6 @@
 # Railway configuration for CosmoAudit
-# This file configures different build settings for different services
+# Main web application service (Node.js + React)
 
-# Default build settings (for services without specific config)
 [build]
 builder = "nixpacks"
 
@@ -10,9 +9,3 @@ healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
-
-# Service-specific configurations
-[services.cosmosaudit]
-builder = "nixpacks"
-buildCommand = "npm run build"
-startCommand = "npm start"
