@@ -1,0 +1,21 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+id = "cusmoaudit-web"
+name = "CusmoAudit-Web"
+builder = "nixpacks"
+buildCommand = "npm run build"
+startCommand = "npm start"
+
+[[services]]
+id = "cosmosaudit"
+name = "CosmosAudit"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
