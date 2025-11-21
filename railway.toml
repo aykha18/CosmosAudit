@@ -12,11 +12,7 @@ restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 
 # Service-specific configurations
-[services.cusmoaudit-web]
+[services.cosmosaudit]
 builder = "nixpacks"
 buildCommand = "npm run build"
 startCommand = "npm start"
-
-[services.cosmosaudit]
-builder = "dockerfile"
-dockerfilePath = "Dockerfile.backup"
